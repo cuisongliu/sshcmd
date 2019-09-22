@@ -14,7 +14,7 @@
 
 package main
 
-import "github.com/cuisongliu/shell/cmd"
+import "github.com/cuisongliu/sshcmd/cmd"
 
 func main() {
 	cmd.Execute()
