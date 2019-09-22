@@ -1,4 +1,4 @@
-module github.com/cuisongliu/shell
+module github.com/cuisongliu/sshcmd
 
 go 1.12
 
