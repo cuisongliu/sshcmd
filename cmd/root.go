@@ -18,12 +18,13 @@ import (
 	"fmt"
 	"github.com/fanux/sealos/install"
 	"os"
+	"sync"
 
 	"github.com/spf13/cobra"
 )
 
 var command string
-var host string
+var host []string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -32,7 +33,15 @@ var rootCmd = &cobra.Command{
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	Run: func(cmd *cobra.Command, args []string) {
-		install.Cmd(host, command)
+		var wg sync.WaitGroup
+		for _, node := range host {
+			wg.Add(1)
+			go func(host string) {
+				defer wg.Done()
+				install.Cmd(host, command)
+			}(node)
+		}
+		wg.Wait()
 	},
 }
 
@@ -50,6 +59,6 @@ func init() {
 	rootCmd.Flags().StringVar(&install.User, "user", "root", "servers user name for ssh")
 	rootCmd.Flags().StringVar(&install.Passwd, "passwd", "", "password for ssh")
 	rootCmd.Flags().StringVar(&install.PrivateKeyFile, "pk", "/root/.ssh/id_rsa", "private key for ssh")
-	rootCmd.Flags().StringVar(&host, "host", "", "exec host")
+	rootCmd.Flags().StringSliceVar(&host, "host", []string{}, "exec host")
 	rootCmd.Flags().StringVar(&command, "cmd", "", "command for shell")
 }
