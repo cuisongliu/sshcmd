@@ -28,6 +28,7 @@ github.com/fanux/sealgate v0.0.4 h1:vfAQIGIzfQfvcG0qfkPcgXG9xeXu6Z6Bv2d7WjUwh3k=
 github.com/fanux/sealgate v0.0.4/go.mod h1:y3141RLsCSgid4+H0O+7CoAqIHDGB0r0mcR8TYnqvps=
 github.com/fanux/sealgate v0.0.9 h1:fnlLQainXW7D1wU5m0iGuF3D79wj8ApZMLhTl6EJUpc=
 github.com/fanux/sealgate v0.0.9/go.mod h1:y3141RLsCSgid4+H0O+7CoAqIHDGB0r0mcR8TYnqvps=
+github.com/fanux/sealos v0.0.0-20190920022206-099454a5a42e/go.mod h1:DcjIJF9U+o+em/Vko9Fa1q3IV7Xus6fIi8FHulc9fXM=
 github.com/fanux/sealos v1.14.1-0.20200221061907-5e23825c564a h1:i20nQ79zWmJpag+nPRSNHAws4nDI9IdyEUiRAs+ZXtQ=
 github.com/fanux/sealos v1.14.1-0.20200221061907-5e23825c564a/go.mod h1:FCLBzXvBRKD0CzBZ3NkMQp8eheLoACf08/ZJurL43R4=
 github.com/fsnotify/fsnotify v1.4.7/go.mod h1:jwhsz4b93w/PPRr/qN1Yymfu8t87LnFCMoQvtojpjFo=
@@ -115,6 +116,7 @@ github.com/soheilhy/cmux v0.1.4/go.mod h1:IM3LyeVVIOuxMH7sFAkER9+bJ4dT7Ms6E4xg4k
 github.com/spaolacci/murmur3 v0.0.0-20180118202830-f09979ecbc72/go.mod h1:JwIasOWyU6f++ZhiEuf87xNszmSA2myDM2Kzu9HwQUA=
 github.com/spf13/afero v1.1.2/go.mod h1:j4pytiNVoe2o6bmDsKpLACNPDBIoEAkihy7loJ1B0CQ=
 github.com/spf13/cast v1.3.0/go.mod h1:Qx5cxh0v+4UWYiBimWS+eyWzqEqokIECu5etghLkUJE=
+github.com/spf13/cobra v0.0.4/go.mod h1:3K3wKZymM7VvHMDS9+Akkh4K60UwM26emMESw8tLCHU=
 github.com/spf13/cobra v0.0.5 h1:f0B+LkLX6DtmRH1isoNA9VTtNUK9K8xYd28JNNfOv/s=
 github.com/spf13/cobra v0.0.5/go.mod h1:3K3wKZymM7VvHMDS9+Akkh4K60UwM26emMESw8tLCHU=
 github.com/spf13/jwalterweatherman v1.0.0/go.mod h1:cQK4TGJAtQXfYWX+Ddv3mKDzgVb68N+wFjFa4jdeBTo=
