@@ -111,6 +111,7 @@ func init() {
 	rootCmd.Flags().StringVar(&install.Passwd, "passwd", "", "password for ssh")
 	rootCmd.Flags().StringVar(&install.PrivateKeyFile, "pk", "/root/.ssh/id_rsa", "private key for ssh")
 	rootCmd.Flags().StringSliceVar(&host, "host", []string{}, "exec host")
+	rootCmd.Flags().StringVar(&command, "cmd", "", "exec shell")
 	rootCmd.Flags().StringVar(&localFilePath, "local-path", "", "local path , ex /etc/local.txt")
 	rootCmd.Flags().StringVar(&remoteFilePath, "remote-path", "", "local path , ex /etc/local.txt")
 	rootCmd.Flags().StringVar(&mode, "mode", "ssh", "mode type ,use | spilt . ex ssh scp ssh|scp scp|ssh")

@@ -1,12 +1,12 @@
-# shell
+# sshcmd
 
 ssh:
 
-shell --user cuisongliu --passwd admin --host 127.0.0.1 --cmd "ls -l"
+sshcmd --user cuisongliu --passwd admin --host 127.0.0.1 --cmd "ls -l"
 
 scp:
 
-shell --user cuisongliu --passwd admin --host 127.0.0.1 --mode "scp" --local-path "/aa.txt" --remote-path "/aa.txt"
+sshcmd --user cuisongliu --passwd admin --host 127.0.0.1 --mode "scp" --local-path "/aa.txt" --remote-path "/aa.txt"
 
 mod:
 ssh,scp,ssh|scp,scp|ssh
