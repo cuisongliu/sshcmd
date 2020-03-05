@@ -3,6 +3,7 @@ module github.com/cuisongliu/sshcmd
 go 1.12
 
 require (
+	github.com/fanux/sealgate v0.0.9
 	github.com/fanux/sealos v1.14.1-0.20200221061907-5e23825c564a
 	github.com/pkg/sftp v1.10.1 // indirect
 	github.com/spf13/cobra v0.0.5

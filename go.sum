@@ -26,6 +26,8 @@ github.com/dgryski/go-sip13 v0.0.0-20181026042036-e10d5fee7954/go.mod h1:vAd38F8
 github.com/drone/drone-go v1.1.0/go.mod h1:GxyeGClYohaKNYJv/ZpsmVHtMJ7WhoT+uDaJNcDIrk4=
 github.com/fanux/sealgate v0.0.4 h1:vfAQIGIzfQfvcG0qfkPcgXG9xeXu6Z6Bv2d7WjUwh3k=
 github.com/fanux/sealgate v0.0.4/go.mod h1:y3141RLsCSgid4+H0O+7CoAqIHDGB0r0mcR8TYnqvps=
+github.com/fanux/sealgate v0.0.9 h1:fnlLQainXW7D1wU5m0iGuF3D79wj8ApZMLhTl6EJUpc=
+github.com/fanux/sealgate v0.0.9/go.mod h1:y3141RLsCSgid4+H0O+7CoAqIHDGB0r0mcR8TYnqvps=
 github.com/fanux/sealos v1.14.1-0.20200221061907-5e23825c564a h1:i20nQ79zWmJpag+nPRSNHAws4nDI9IdyEUiRAs+ZXtQ=
 github.com/fanux/sealos v1.14.1-0.20200221061907-5e23825c564a/go.mod h1:FCLBzXvBRKD0CzBZ3NkMQp8eheLoACf08/ZJurL43R4=
 github.com/fsnotify/fsnotify v1.4.7/go.mod h1:jwhsz4b93w/PPRr/qN1Yymfu8t87LnFCMoQvtojpjFo=
