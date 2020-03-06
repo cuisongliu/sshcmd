@@ -16,7 +16,7 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/fanux/sealos/install"
+	"github.com/cuisongliu/sshcmd/pkg/sshutil"
 	"github.com/wonderivan/logger"
 	"golang.org/x/crypto/ssh"
 	"os"
@@ -26,16 +26,22 @@ import (
 )
 
 var command, localFilePath, remoteFilePath, mode string
+var user, password, pkFile string
 var host []string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "shell",
-	Short: "A brief description of your application",
+	Use:   "sshcmd",
+	Short: "cmd and scp for ssh",
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	Run: func(cmd *cobra.Command, args []string) {
-		validate()
+		sshType := &sshutil.SSH{
+			User:     user,
+			Password: password,
+			PkFile:   pkFile,
+		}
+		validate(sshType)
 		var wg sync.WaitGroup
 		for _, node := range host {
 			wg.Add(1)
@@ -43,19 +49,18 @@ var rootCmd = &cobra.Command{
 				defer wg.Done()
 				switch mode {
 				case "ssh":
-					install.Cmd(host, command)
+					sshType.Cmd(host, command)
 				case "scp":
-					install.Copy(host, localFilePath, remoteFilePath)
+					sshType.Copy(host, localFilePath, remoteFilePath)
 				case "ssh|scp":
-					install.Cmd(host, command)
-					install.Copy(host, localFilePath, remoteFilePath)
+					sshType.Cmd(host, command)
+					sshType.Copy(host, localFilePath, remoteFilePath)
 				case "scp|ssh":
-					install.Copy(host, localFilePath, remoteFilePath)
-					install.Cmd(host, command)
+					sshType.Copy(host, localFilePath, remoteFilePath)
+					sshType.Cmd(host, command)
 				default:
-					install.Cmd(host, command)
+					sshType.Cmd(host, command)
 				}
-
 			}(node)
 		}
 		wg.Wait()
@@ -63,19 +68,19 @@ var rootCmd = &cobra.Command{
 }
 
 //validate host is connect
-func validate() {
+func validate(tSSH *sshutil.SSH) {
 	if len(host) == 0 {
 		logger.Error("hosts not allow empty")
 		os.Exit(1)
 	}
-	if install.User == "" {
+	if tSSH.User == "" {
 		logger.Error("user not allow empty")
 		os.Exit(1)
 	}
 	var session *ssh.Session
 	var errors []error
 	for _, h := range host {
-		session, err := install.Connect(install.User, install.Passwd, install.PrivateKeyFile, h)
+		session, err := tSSH.Connect(h)
 		if err != nil {
 			logger.Error("[%s] ------------ check error", h)
 			logger.Error("[%s] ------------ error[%s]", h, err)
@@ -107,9 +112,9 @@ func Execute() {
 
 func init() {
 	// Here you will define your flags and configuration settings.
-	rootCmd.Flags().StringVar(&install.User, "user", "root", "servers user name for ssh")
-	rootCmd.Flags().StringVar(&install.Passwd, "passwd", "", "password for ssh")
-	rootCmd.Flags().StringVar(&install.PrivateKeyFile, "pk", "/root/.ssh/id_rsa", "private key for ssh")
+	rootCmd.Flags().StringVar(&user, "user", "root", "servers user name for ssh")
+	rootCmd.Flags().StringVar(&password, "passwd", "", "password for ssh")
+	rootCmd.Flags().StringVar(&pkFile, "pk", "/root/.ssh/id_rsa", "private key for ssh")
 	rootCmd.Flags().StringSliceVar(&host, "host", []string{}, "exec host")
 	rootCmd.Flags().StringVar(&command, "cmd", "", "exec shell")
 	rootCmd.Flags().StringVar(&localFilePath, "local-path", "", "local path , ex /etc/local.txt")
