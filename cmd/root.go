@@ -51,12 +51,12 @@ var rootCmd = &cobra.Command{
 				case "ssh":
 					sshType.Cmd(host, command)
 				case "scp":
-					sshType.Copy(host, localFilePath, remoteFilePath)
+					sshType.CopyForMD5(host, localFilePath, remoteFilePath, "")
 				case "ssh|scp":
 					sshType.Cmd(host, command)
-					sshType.Copy(host, localFilePath, remoteFilePath)
+					sshType.CopyForMD5(host, localFilePath, remoteFilePath, "")
 				case "scp|ssh":
-					sshType.Copy(host, localFilePath, remoteFilePath)
+					sshType.CopyForMD5(host, localFilePath, remoteFilePath, "")
 					sshType.Cmd(host, command)
 				default:
 					sshType.Cmd(host, command)
