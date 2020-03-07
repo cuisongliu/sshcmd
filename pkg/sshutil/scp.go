@@ -2,12 +2,12 @@ package sshutil
 
 import (
 	"fmt"
+	"github.com/cuisongliu/sshcmd/pkg/md5sum"
 	"github.com/pkg/sftp"
 	"github.com/wonderivan/logger"
 	"golang.org/x/crypto/ssh"
 	"net"
 	"os"
-	"os/exec"
 	"time"
 )
 
@@ -16,18 +16,11 @@ func (ss *SSH) CopyForMD5(host, localFilePath, remoteFilePath, md5 string) bool 
 	//如果有md5则可以验证
 	//如果没有md5则拿到本地数据后验证
 	if md5 == "" {
-		cmd := fmt.Sprintf("md5sum %s | cut -d\" \" -f1", localFilePath)
-		c := exec.Command("sh", "-c", cmd)
-		out, err := c.CombinedOutput()
-		if err != nil {
-			logger.Error(err)
-		}
-		md5 = string(out)
+		md5 = md5sum.FromLocal(localFilePath)
 	}
 	logger.Debug("source file md5 value is %s", md5)
 	ss.Copy(host, localFilePath, remoteFilePath)
-	cmd := fmt.Sprintf("md5sum %s | cut -d\" \" -f1", remoteFilePath)
-	remoteMD5 := ss.CmdToString(host, cmd)
+	remoteMD5 := ss.Md5Sum(host, remoteFilePath)
 	logger.Debug("host: %s , remote md5: %s", host, remoteMD5)
 	if remoteMD5 == md5 {
 		logger.Info("md5 validate true")
@@ -35,6 +28,11 @@ func (ss *SSH) CopyForMD5(host, localFilePath, remoteFilePath, md5 string) bool 
 	}
 	logger.Error("md5 validate false")
 	return false
+}
+func (ss *SSH) Md5Sum(host, remoteFilePath string) string {
+	cmd := fmt.Sprintf("md5sum %s | cut -d\" \" -f1", remoteFilePath)
+	remoteMD5 := ss.CmdToString(host, cmd)
+	return remoteMD5
 }
 
 //Copy is
