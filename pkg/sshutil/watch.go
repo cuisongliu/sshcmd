@@ -28,7 +28,7 @@ func (ss *SSH) LoggerFileSize(host, filename string, size int) {
 			}
 			lengthFloat := float64(lengthByte)
 			value, _ := strconv.ParseFloat(fmt.Sprintf("%.2f", lengthFloat/oneMBByte), 64)
-			logger.Alert("[%s]transfer total size is: %.2f%s", host, value, "MB")
+			logger.Alert("[ssh][%s]transfer total size is: %.2f%s", host, value, "MB")
 		}
 	}
 }
@@ -46,7 +46,7 @@ func (ss *SSH) IsFilExist(host, remoteFilePath string) bool {
 	count, err := strconv.Atoi(string(data))
 	defer func() {
 		if r := recover(); r != nil {
-			logger.Error("[%s]RemoteFilExist:%s", host, err)
+			logger.Error("[ssh][%s]RemoteFilExist:%s", host, err)
 		}
 	}()
 	if err != nil {
