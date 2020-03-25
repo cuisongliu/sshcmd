@@ -20,6 +20,7 @@ import (
 	"github.com/wonderivan/logger"
 	"golang.org/x/crypto/ssh"
 	"os"
+	"strings"
 	"sync"
 
 	"github.com/spf13/cobra"
@@ -47,24 +48,25 @@ var rootCmd = &cobra.Command{
 			wg.Add(1)
 			go func(host string) {
 				defer wg.Done()
-				switch mode {
-				case "ssh":
-					sshType.Cmd(host, command)
-				case "scp":
-					sshType.CopyForMD5(host, localFilePath, remoteFilePath, "")
-				case "ssh|scp":
-					sshType.Cmd(host, command)
-					sshType.CopyForMD5(host, localFilePath, remoteFilePath, "")
-				case "scp|ssh":
-					sshType.CopyForMD5(host, localFilePath, remoteFilePath, "")
-					sshType.Cmd(host, command)
-				default:
-					sshType.Cmd(host, command)
+				modes := strings.Split(mode, "|")
+				for i, _ := range modes {
+					exec(sshType, modes[i], host)
 				}
 			}(node)
 		}
 		wg.Wait()
 	},
+}
+
+func exec(ssh *sshutil.SSH, mode, host string) {
+	switch mode {
+	case "ssh":
+		ssh.Cmd(host, command)
+	case "scp":
+		ssh.CopyForMD5(host, localFilePath, remoteFilePath, "")
+	case "sshAsync":
+		_ = ssh.CmdAsync(host, command)
+	}
 }
 
 //validate host is connect
@@ -119,5 +121,5 @@ func init() {
 	rootCmd.Flags().StringVar(&command, "cmd", "", "exec shell")
 	rootCmd.Flags().StringVar(&localFilePath, "local-path", "", "local path , ex /etc/local.txt")
 	rootCmd.Flags().StringVar(&remoteFilePath, "remote-path", "", "local path , ex /etc/local.txt")
-	rootCmd.Flags().StringVar(&mode, "mode", "ssh", "mode type ,use | spilt . ex ssh scp ssh|scp scp|ssh")
+	rootCmd.Flags().StringVar(&mode, "mode", "ssh", "mode type ,use | spilt . ex ssh sshAsync scp ssh|scp scp|ssh")
 }
