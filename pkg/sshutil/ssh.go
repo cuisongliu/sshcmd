@@ -59,10 +59,9 @@ func (ss *SSH) Cmd(host string, cmd string) []string {
 //CmdToString is in host exec cmd and replace to spilt str
 func (ss *SSH) CmdToString(host, cmd, spilt string) string {
 	data := ss.Cmd(host, cmd)
-	logger.Info("result: %v", data)
-
 	if len(data) >0 {
 		str := strings.Join(data,spilt)
+		logger.Debug("[%s]command %s result is: %s", host,cmd, str)
 		return str
 	}
 	return ""
