@@ -2,10 +2,12 @@ package sshutil
 
 import (
 	"fmt"
+	"github.com/cheggaaa/pb"
 	"github.com/cuisongliu/sshcmd/pkg/md5sum"
 	"github.com/pkg/sftp"
 	"github.com/wonderivan/logger"
 	"golang.org/x/crypto/ssh"
+	"io"
 	"net"
 	"os"
 	"strings"
@@ -60,7 +62,16 @@ func (ss *SSH) Copy(host, localFilePath, remoteFilePath string) {
 		panic(1)
 	}
 	defer srcFile.Close()
-
+	stat,err := srcFile.Stat()
+	defer func() {
+		if r := recover(); r != nil {
+			logger.Error("[%s]scpCopy: %s", host, err)
+		}
+	}()
+	if err != nil {
+		panic(1)
+	}
+	sourceSize := stat.Size()
 	dstFile, err := sftpClient.Create(remoteFilePath)
 	defer func() {
 		if r := recover(); r != nil {
@@ -71,17 +82,19 @@ func (ss *SSH) Copy(host, localFilePath, remoteFilePath string) {
 		panic(1)
 	}
 	defer dstFile.Close()
-	buf := make([]byte, 100*oneMBByte) //100mb
-	totalMB := 0
-	for {
-		n, _ := srcFile.Read(buf)
-		if n == 0 {
-			break
-		}
-		length, _ := dstFile.Write(buf[0:n])
-		totalMB += length / oneMBByte
-		logger.Alert("[%s]transfer total size is: %d%s", host, totalMB, "MB")
-	}
+	//create bar
+	bar := pb.New(int(sourceSize)).SetUnits(pb.U_BYTES).SetRefreshRate(time.Millisecond * 10).Prefix(localFilePath)
+	bar.ShowSpeed = true
+	bar.Start()
+
+
+	// create proxy reader
+	reader := bar.NewProxyReader(srcFile)
+	// and copy from reader
+//	fmt.Println(localFilePath,":")
+	io.Copy(dstFile, reader)
+	bar.Finish()
+	logger.Alert("[%s] %s transfer completed", host,localFilePath)
 }
 
 //SftpConnect  is
