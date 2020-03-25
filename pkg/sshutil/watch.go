@@ -5,6 +5,7 @@ import (
 	"github.com/wonderivan/logger"
 	"path"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -18,8 +19,8 @@ func (ss *SSH) LoggerFileSize(host, filename string, size int) {
 		select {
 		case <-t.C:
 			length := ss.CmdToString(host, "ls -l "+filename+" | awk '{print $5}'", "")
-			//length = strings.Replace(length, "\n", "", -1)
-			//length = strings.Replace(length, "\r", "", -1)
+			length = strings.Replace(length, "\n", "", -1)
+			length = strings.Replace(length, "\r", "", -1)
 			lengthByte, _ := strconv.Atoi(length)
 			if lengthByte == size {
 				t.Stop()
@@ -41,9 +42,8 @@ func (ss *SSH) IsFilExist(host, remoteFilePath string) bool {
 	//remoteFileCommand := fmt.Sprintf("ls -l %s| grep %s | grep -v grep |wc -l", remoteFileDirName, remoteFileName)
 	remoteFileCommand := fmt.Sprintf("ll %s/%s 2>/dev/null |wc -l", remoteFileDirName, remoteFileName)
 
-
-	data := ss.CmdToString(host, remoteFileCommand," ")
-	count, err := strconv.Atoi(string(data))
+	data := ss.CmdToString(host, remoteFileCommand, " ")
+	count, err := strconv.Atoi(strings.TrimSpace(data))
 	defer func() {
 		if r := recover(); r != nil {
 			logger.Error("[ssh][%s]RemoteFilExist:%s", host, err)

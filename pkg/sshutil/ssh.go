@@ -2,14 +2,9 @@ package sshutil
 
 import (
 	"bufio"
-	"fmt"
 	"github.com/wonderivan/logger"
-	"io"
 	"strings"
 )
-
-
-
 
 //Cmd is in host exec cmd
 func (ss *SSH) Cmd(host string, cmd string) []byte {
@@ -34,7 +29,7 @@ func (ss *SSH) Cmd(host string, cmd string) []byte {
 	if err != nil {
 		panic(1)
 	}
-	return result
+	return b
 }
 
 func (ss *SSH) CmdAsync(host string, cmd string) error {
@@ -74,8 +69,8 @@ func (ss *SSH) CmdAsync(host string, cmd string) error {
 func (ss *SSH) CmdToString(host, cmd, spilt string) string {
 	data := ss.Cmd(host, cmd)
 	if data != nil {
- 		str := string(data)
- 		str = strings.ReplaceAll(str, "\r\n", spilt)
+		str := string(data)
+		str = strings.ReplaceAll(str, "\r\n", spilt)
 		return str
 	}
 	return ""
