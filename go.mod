@@ -9,3 +9,5 @@ require (
 	golang.org/x/crypto v0.0.0-20190820162420-60c769a6c586
 	golang.org/x/sys v0.0.0-20200223170610-d5e6a3e2c0ae // indirect
 )
+
+replace github.com/wonderivan/logger => github.com/fanux/sealos/pkg/logger v0.0.0-20200406033522-73f3ef41977c

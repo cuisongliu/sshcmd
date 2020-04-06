@@ -12,6 +12,8 @@ import (
 	"time"
 )
 
+const oneMBByte = 1024 * 1024
+
 //Copy is
 func (ss *SSH) CopyForMD5(host, localFilePath, remoteFilePath, md5 string) bool {
 	//如果有md5则可以验证

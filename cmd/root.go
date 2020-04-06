@@ -60,11 +60,9 @@ var rootCmd = &cobra.Command{
 
 func exec(ssh *sshutil.SSH, mode, host string) {
 	switch mode {
-	case "ssh":
-		ssh.Cmd(host, command)
 	case "scp":
 		ssh.CopyForMD5(host, localFilePath, remoteFilePath, "")
-	case "sshAsync":
+	case "ssh":
 		_ = ssh.CmdAsync(host, command)
 	}
 }
@@ -113,6 +111,7 @@ func Execute() {
 }
 
 func init() {
+	logger.Cfg()
 	// Here you will define your flags and configuration settings.
 	rootCmd.Flags().StringVar(&user, "user", "root", "servers user name for ssh")
 	rootCmd.Flags().StringVar(&password, "passwd", "", "password for ssh")
@@ -121,5 +120,5 @@ func init() {
 	rootCmd.Flags().StringVar(&command, "cmd", "", "exec shell")
 	rootCmd.Flags().StringVar(&localFilePath, "local-path", "", "local path , ex /etc/local.txt")
 	rootCmd.Flags().StringVar(&remoteFilePath, "remote-path", "", "local path , ex /etc/local.txt")
-	rootCmd.Flags().StringVar(&mode, "mode", "ssh", "mode type ,use | spilt . ex ssh sshAsync scp ssh|scp scp|ssh")
+	rootCmd.Flags().StringVar(&mode, "mode", "ssh", "mode type ,use | spilt . ex ssh  scp ssh|scp scp|ssh")
 }
