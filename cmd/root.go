@@ -17,6 +17,7 @@ package cmd
 import (
 	"fmt"
 	"github.com/cuisongliu/sshcmd/pkg/sshutil"
+	"github.com/cuisongliu/sshcmd/pkg/utils"
 	"github.com/wonderivan/logger"
 	"golang.org/x/crypto/ssh"
 	"os"
@@ -79,6 +80,7 @@ func validate(tSSH *sshutil.SSH) {
 	}
 	var session *ssh.Session
 	var errors []error
+	host = utils.ParseIPs(host)
 	for _, h := range host {
 		session, err := tSSH.Connect(h)
 		if err != nil {
