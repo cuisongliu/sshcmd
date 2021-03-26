@@ -25,10 +25,10 @@ jobs:
       run: go env -w GOOS=linux && go env -w GOARCH=amd64 && go env -w  GOPROXY=https://goproxy.io  && go build -o sshcmd -v && chmod a+x sshcmd
 
     - name: Build Arm
-      run: go env -w GOOS=linux && go env -w GOARCH=arm64 && go env -w  GOPROXY=https://goproxy.io  && go build -o sshcmd-arm -v && chmod a+x sshcmd
+      run: go env -w GOOS=linux && go env -w GOARCH=arm64 && go env -w  GOPROXY=https://goproxy.io  && go build -o sshcmd-arm64 -v && chmod a+x sshcmd
 
     - uses: ncipollo/release-action@v1
       with:
-        artifacts: "sshcmd,sshcmd-arm"
+        artifacts: "sshcmd,sshcmd-arm64"
         bodyFile: "README.md"
         token: ${{ secrets.GITHUB_TOKEN }}
